@@ -1,0 +1,21 @@
+﻿@model Product
+<div class="row">
+    <div class="row-md-4">
+        <img src="/@Model.ImageUrl" style="width:300px" />
+    </div>
+    <div class="col-md-7">
+        <p>
+            Tên sản phẩm: @Model.Name
+        </p>
+        <p>
+            Giá sản phẩm: <span class="price">@Model.Price</span>
+        </p>
+        <a asp-action="AddToCart" asp-route-id="@Model.Id" class="btn btn-success">
+            <i class="bi bi-cart"></i> Add To Cart
+        </a>
+        <p>
+            Thông tin mô tả: <br />
+            @Html.Raw(Model.Description)
+        </p>
+    </div>
+</div>
