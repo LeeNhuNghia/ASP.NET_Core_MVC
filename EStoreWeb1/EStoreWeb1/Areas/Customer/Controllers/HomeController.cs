@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace EStoreWeb1.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext db;

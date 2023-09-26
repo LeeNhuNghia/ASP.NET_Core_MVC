@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using EStoreWeb1.Models;   
+using EStoreWeb1.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace EStoreWeb1
 {
@@ -26,7 +28,20 @@ namespace EStoreWeb1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationDbContext>( options => options.UseSqlServer("name=DefaultConnection"));    
+            services.AddDbContext<ApplicationDbContext>( options => options.UseSqlServer("name=DefaultConnection"));
+
+            //services.AddDefaultIdentity< ApplicationUser> ().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity< ApplicationUser, IdentityRole> ().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddRazorPages();
+
+            services.AddScoped<IEmailSender, EmailSender>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.LogoutPath = $"/Identity/Account/Logout";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,13 +61,14 @@ namespace EStoreWeb1
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                   name: "areas",
                   pattern: "{area=Admin}/{controller=Product}/{action=Index}/{id?}"

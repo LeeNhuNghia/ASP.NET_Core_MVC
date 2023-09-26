@@ -1,4 +1,5 @@
 ﻿using EStoreWeb1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace EStoreWeb1.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private ApplicationDbContext db;
